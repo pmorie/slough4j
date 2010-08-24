@@ -1,7 +1,7 @@
 package org.slf4j.impl;
 
 import org.slf4j.ILoggerFactory;
-import org.slough4j.Slough4JBootstrapper;
+import org.slough4j.bootstrap.Slough4JBootstrapper;
 import org.slough4j.factory.LoggerFactoryImpl;
 
 /**
@@ -30,7 +30,7 @@ public class StaticLoggerBinder {
     private final String factoryClassName = LoggerFactoryImpl.class.getName();
 
     private StaticLoggerBinder() {
-        factory = Slough4JBootstrapper.configureSlough4J();
+        factory = new Slough4JBootstrapper().configureSlough4J();
     }
 
     public ILoggerFactory getLoggerFactory() {

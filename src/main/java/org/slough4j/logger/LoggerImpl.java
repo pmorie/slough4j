@@ -1,7 +1,8 @@
-package org.slf4j.impl;
+package org.slough4j.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
+import org.slough4j.internals.dispatch.Dispatcher;
 import org.slough4j.model.Level;
 import org.slough4j.model.Levels;
 
@@ -11,12 +12,26 @@ import org.slough4j.model.Levels;
  * @author pmorie
  */
 public class LoggerImpl implements Logger {
+    /**
+     * Acts as a thread-local cache for the name of the current thread.  This is necessary because java.lang.Thread
+     * stores the name of a thread as a char[].  Each call to Thread.getName() results in the construction of a new
+     * java.lang.String, which is time-consuming.
+     */
+    private static final ThreadLocal<String> threadName = new ThreadLocal<String>() {
+        @Override
+        protected String initialValue() {
+            return Thread.currentThread().getName();
+        }
+    };
+
     private final String name;
     private final Level effectiveLevel;
+    private final Dispatcher dispatcher;
 
-    public LoggerImpl(String name, Level effectiveLevel) {
+    public LoggerImpl(String name, Level effectiveLevel, Dispatcher dispatcher) {
         this.name = name;
         this.effectiveLevel = effectiveLevel;
+        this.dispatcher = dispatcher;
     }
 
     public String getName() {
