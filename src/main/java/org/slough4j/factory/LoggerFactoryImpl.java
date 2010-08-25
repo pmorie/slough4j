@@ -4,7 +4,7 @@ import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slough4j.internals.dispatch.Dispatcher;
 import org.slough4j.internals.level.LevelStore;
-import org.slough4j.logger.LoggerImpl;
+import org.slough4j.internals.logger.LoggerImpl;
 import org.slough4j.model.Level;
 
 import java.util.HashMap;

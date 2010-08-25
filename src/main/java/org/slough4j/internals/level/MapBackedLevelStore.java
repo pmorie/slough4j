@@ -1,12 +1,11 @@
 package org.slough4j.internals.level;
 
-import org.slough4j.internals.level.LevelStore;
 import org.slough4j.model.Level;
 
 import java.util.Map;
 
 /**
- * TODO: Javadoc
+ * A level store backed by a Map.
  *
  * @author pmorie
  */
