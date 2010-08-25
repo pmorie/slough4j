@@ -1,4 +1,4 @@
-package org.slough4j.logger;
+package org.slough4j.internals.logger;
 
 import org.slf4j.Logger;
 import org.slf4j.Marker;
