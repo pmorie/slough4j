@@ -10,11 +10,11 @@ import org.testng.annotations.Test;
 public class LevelsTest {
     @Test
     public void testTestLevels_shouldReturnTrue() {
-        assert Levels.testLevels(Level.TRACE, Level.DEBUG);
+        assert Levels.isLevelEnabled(Level.TRACE, Level.DEBUG);
     }
 
     @Test
     public void testTestLevels_shouldReturnFalse() {
-        assert !Levels.testLevels(Level.DEBUG, Level.TRACE);
+        assert !Levels.isLevelEnabled(Level.DEBUG, Level.TRACE);
     }
 }

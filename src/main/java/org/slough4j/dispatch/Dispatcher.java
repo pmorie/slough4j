@@ -1,4 +1,4 @@
-package org.slough4j.internals.dispatch;
+package org.slough4j.dispatch;
 
 import org.slough4j.model.LogMessage;
 
@@ -8,7 +8,5 @@ import org.slough4j.model.LogMessage;
  * @author pmorie
  */
 public interface Dispatcher {
-    void start();
-
     void dispatch(LogMessage message);
 }

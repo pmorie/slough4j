@@ -1,10 +1,12 @@
-package org.slough4j.bootstrap;
+package org.slough4j;
 
 import org.slf4j.ILoggerFactory;
+import org.slough4j.configuration.ConfigKeys;
+import org.slough4j.configuration.Configuration;
 import org.slough4j.factory.LoggerFactoryImpl;
-import org.slough4j.internals.dispatch.Dispatcher;
-import org.slough4j.internals.level.LevelStore;
-import org.slough4j.internals.level.MapBackedLevelStore;
+import org.slough4j.dispatch.Dispatcher;
+import org.slough4j.level.LevelStore;
+import org.slough4j.level.MapBackedLevelStore;
 import org.slough4j.model.Level;
 
 import java.io.IOException;

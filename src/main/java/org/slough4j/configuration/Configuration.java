@@ -1,4 +1,4 @@
-package org.slough4j.bootstrap;
+package org.slough4j.configuration;
 
 import org.slough4j.model.Level;
 

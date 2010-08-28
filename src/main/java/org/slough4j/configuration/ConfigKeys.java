@@ -1,4 +1,4 @@
-package org.slough4j.bootstrap;
+package org.slough4j.configuration;
 
 /**
  * TODO: Javadoc

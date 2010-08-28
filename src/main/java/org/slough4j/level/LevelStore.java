@@ -1,4 +1,4 @@
-package org.slough4j.internals.level;
+package org.slough4j.level;
 
 import org.slough4j.model.Level;
 
