@@ -1,5 +1,7 @@
 package org.slough4j.util;
 
+import org.slf4j.helpers.MessageFormatter;
+
 /**
  * TODO: Javadoc
  *
@@ -7,6 +9,6 @@ package org.slough4j.util;
  */
 public class MessageFormatting {
     public static String format(String message, Object ... args) {
-        return null;
+        return MessageFormatter.format(message, args).getMessage(); 
     }
 }

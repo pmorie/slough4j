@@ -1,19 +1,26 @@
 package org.slough4j;
 
 import org.slf4j.ILoggerFactory;
+import org.slough4j.appender.Appender;
+import org.slough4j.appender.ConsoleAppender;
 import org.slough4j.configuration.ConfigKeys;
 import org.slough4j.configuration.Configuration;
+import org.slough4j.dispatch.DispatcherImpl;
+import org.slough4j.dispatch.LogWriterThread;
 import org.slough4j.factory.LoggerFactoryImpl;
 import org.slough4j.dispatch.Dispatcher;
 import org.slough4j.level.LevelStore;
 import org.slough4j.level.MapBackedLevelStore;
 import org.slough4j.model.Level;
+import org.slough4j.model.LogMessage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Bootstraps Slough4J and creates an instance of ILoggerFactory to bind to the API.
@@ -80,7 +87,7 @@ public final class Slough4JBootstrapper {
 
     protected ILoggerFactory configureSlough4J(Configuration config) {
         LevelStore levelStore = createLevelStore(config);
-        Dispatcher dispatcher = createDispatcher();
+        Dispatcher dispatcher = createDispatcher(config);
 
         return new LoggerFactoryImpl(levelStore, dispatcher);
     }
@@ -89,7 +96,14 @@ public final class Slough4JBootstrapper {
         return new MapBackedLevelStore(config.getLevelMap(), config.getDefaultLevel());
     }
 
-    protected Dispatcher createDispatcher() {
-        return null;
+    protected Dispatcher createDispatcher(Configuration config) {
+        BlockingQueue<LogMessage> queue = new LinkedBlockingQueue<LogMessage>();
+        Appender appender = new ConsoleAppender(System.out);
+
+        LogWriterThread thread = new LogWriterThread(queue, appender);
+
+        thread.start();
+
+        return new DispatcherImpl(queue);
     }
 }
