@@ -4,3 +4,7 @@
 *.iml
 target/
 .idea/
+<<<<<<< HEAD
+=======
+*.iml
+>>>>>>> e0676b03f8802d3c69cde8bdfffd7f834273bb7f
