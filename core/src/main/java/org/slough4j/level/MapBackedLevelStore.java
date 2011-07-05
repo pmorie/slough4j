@@ -31,6 +31,16 @@ public class MapBackedLevelStore implements LevelStore {
         Level level = levelMap.get(loggerName);
 
         if (level == null) {
+            for (String temp = loggerName; level == null; temp = temp.substring(0, temp.lastIndexOf('.'))) {
+                level = levelMap.get(temp);
+
+                if (temp.indexOf('.') == -1) {
+                    break;
+                }
+            }
+        }
+
+        if (level == null) {
             return defaultLevel;
         }
 
