@@ -3,8 +3,8 @@ package org.slough4j;
 import org.slf4j.ILoggerFactory;
 import org.slough4j.appender.Appender;
 import org.slough4j.appender.ConsoleAppender;
-import org.slough4j.configuration.ConfigKeys;
-import org.slough4j.configuration.Configuration;
+import org.slough4j.conf.ConfigKeys;
+import org.slough4j.conf.Configuration;
 import org.slough4j.dispatch.DispatcherImpl;
 import org.slough4j.dispatch.LogWriterThread;
 import org.slough4j.factory.LoggerFactoryImpl;
@@ -29,7 +29,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public final class Slough4JBootstrapper {
     private static final String DEFAULT_PROPERTIES = "/slough4j.properties";
-    private static final String CONFIGURATION_PROPERTY_KEY = "slough4j.configuration";
+    private static final String CONFIGURATION_PROPERTY_KEY = "slough4j.conf";
 
     public ILoggerFactory configureSlough4J() {
         Properties properties = loadProperties();
@@ -77,7 +77,7 @@ public final class Slough4JBootstrapper {
                     temp = Level.valueOf(properties.getProperty(p));
                     levelMap.put(p, temp);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ignoring level configuration for " + p + " - Invalid Level");
+                    System.out.println("Ignoring level conf for " + p + " - Invalid Level");
                 }
             }
         }

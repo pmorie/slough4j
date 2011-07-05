@@ -1,4 +1,4 @@
-package org.slough4j.configuration;
+package org.slough4j.conf;
 
 import org.slough4j.model.Level;
 
