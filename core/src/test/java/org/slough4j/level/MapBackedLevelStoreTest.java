@@ -31,5 +31,6 @@ public class MapBackedLevelStoreTest {
         assertEquals(Level.DEBUG, store.findLevel("com.foo.bar.OtherThing"));
         assertEquals(Level.INFO, store.findLevel("com.foo.baz.YetAnotherThing"));
         assertEquals(Level.WARN, store.findLevel("com.sun.OfficialSoundingClass"));
+        assertEquals(Level.ERROR, store.findLevel("org.junit.Assert"));
     }
 }
