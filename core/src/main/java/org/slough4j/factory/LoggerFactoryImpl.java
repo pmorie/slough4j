@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slough4j.dispatch.Dispatcher;
 import org.slough4j.level.LevelStore;
 import org.slough4j.logger.LoggerImpl;
+import org.slough4j.logger.NopLogger;
 import org.slough4j.model.Level;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.Map;
 public class LoggerFactoryImpl implements ILoggerFactory {
     private final LevelStore levelStore;
     private final Dispatcher dispatcher;
-    private final Map<String, LoggerImpl> loggerMap = new HashMap<String, LoggerImpl>();
+    private final Map<String, Logger> loggerMap = new HashMap<String, Logger>();
 
     public LoggerFactoryImpl(LevelStore levelStore, Dispatcher dispatcher) {
         this.levelStore = levelStore;
@@ -27,7 +28,7 @@ public class LoggerFactoryImpl implements ILoggerFactory {
 
     @Override
     public Logger getLogger(String name) {
-        LoggerImpl logger = loggerMap.get(name);
+        Logger logger = loggerMap.get(name);
 
         if (logger == null) {
             logger = createLogger(name);
@@ -37,10 +38,16 @@ public class LoggerFactoryImpl implements ILoggerFactory {
         return logger;
     }
 
-    protected LoggerImpl createLogger(String name) {
+    protected Logger createLogger(String name) {
         Level level = levelStore.findLevel(name);
 
-        LoggerImpl logger = new LoggerImpl(name, level, dispatcher);
+        Logger logger;
+
+        if (Level.OFF == level) {
+            logger = new NopLogger(name);
+        } else {
+            logger = new LoggerImpl(name, level, dispatcher);
+        }
 
         return logger;
     }

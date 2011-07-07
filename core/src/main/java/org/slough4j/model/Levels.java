@@ -9,26 +9,26 @@ public final class Levels {
     private Levels() {}
 
     public static boolean isTraceEnabled(Level test) {
-        return isLevelEnabled(test, Level.TRACE);
+        return isLevelEnabledFor(test, Level.TRACE);
     }
 
     public static boolean isDebugEnabled(Level test) {
-        return isLevelEnabled(test, Level.DEBUG);
+        return isLevelEnabledFor(test, Level.DEBUG);
     }
 
     public static boolean isInfoEnabled(Level test) {
-        return isLevelEnabled(test, Level.INFO);
+        return isLevelEnabledFor(test, Level.INFO);
     }
 
     public static boolean isWarnEnabled(Level test) {
-        return isLevelEnabled(test, Level.WARN);
+        return isLevelEnabledFor(test, Level.WARN);
     }
 
     public static boolean isErrorEnabled(Level test) {
-        return isLevelEnabled(test, Level.ERROR);
+        return isLevelEnabledFor(test, Level.ERROR);
     }
 
-    public static boolean isLevelEnabled(Level effectiveLevel, Level test) {
+    public static boolean isLevelEnabledFor(Level effectiveLevel, Level test) {
         if ((effectiveLevel == null) || (test == null)) {
             return false;
         }

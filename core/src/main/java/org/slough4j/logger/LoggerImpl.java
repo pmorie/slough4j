@@ -41,7 +41,7 @@ public class LoggerImpl implements Logger {
     }
 
     protected void dispatch(Level level, String message) {
-        if (!Levels.isLevelEnabled(effectiveLevel, level)) {
+        if (!Levels.isLevelEnabledFor(effectiveLevel, level)) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class LoggerImpl implements Logger {
     }
 
     protected void dispatch(Level level, String message, Object ... args) {
-        if (!Levels.isLevelEnabled(effectiveLevel, level)) {
+        if (!Levels.isLevelEnabledFor(effectiveLevel, level)) {
             return;
         }
 
@@ -62,7 +62,7 @@ public class LoggerImpl implements Logger {
     }
 
     protected void dispatch(Level level, String message, Throwable t) {
-        if (!Levels.isLevelEnabled(effectiveLevel, level)) {
+        if (!Levels.isLevelEnabledFor(effectiveLevel, level)) {
             return;
         }
 

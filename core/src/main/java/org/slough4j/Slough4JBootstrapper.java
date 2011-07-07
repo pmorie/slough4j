@@ -102,6 +102,7 @@ public final class Slough4JBootstrapper {
 
         LogWriterThread thread = new LogWriterThread(queue, appender);
 
+        thread.setDaemon(true);
         thread.start();
 
         return new DispatcherImpl(queue);

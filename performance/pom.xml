@@ -16,7 +16,7 @@
   <dependencies>
       <dependency>
           <groupId>${project.groupId}</groupId>
-          <artifactId>slough4j</artifactId>
+          <artifactId>slough4j-core</artifactId>
           <version>${project.version}</version>
       </dependency>
   </dependencies>

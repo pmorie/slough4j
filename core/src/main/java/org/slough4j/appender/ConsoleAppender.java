@@ -30,8 +30,8 @@ public class ConsoleAppender implements Appender {
     protected String format(LogMessage message) {
         return new Date(message.getTimestamp()) + ": "
                       + message.getLevel()
-                      + " [" + message.getThreadName() + "]"
-                      + message.getLoggerName()
+                      + " [" + message.getThreadName() + "] "
+                      + message.getLoggerName() + " "
                       + message.getMessage()
                       + "\n";
     }

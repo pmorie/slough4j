@@ -1,4 +1,4 @@
-package org.slough4j;
+package org.slough4j.runner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +12,15 @@ public class Runner {
     private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
     public static void main(String ... args) {
-        for (int ii = 0; ii < 10; ii++) {
-            log.info("Foo");
-            
-        }
+        log.debug("Hi");
+        log.info("There");
+        log.warn("Big");
+        log.error("World");
+        
+        A a = new A();
+        a.execute();
+
+        B b = new B();
+        b.execute();
     }
 }
