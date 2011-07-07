@@ -57,7 +57,7 @@ public final class Slough4JBootstrapper {
             properties.load(stream);
         } catch (IOException e) {
             loadError = true;
-            System.out.println("Couldn't load configuration file from classpath: " + conf);
+            System.out.println("Slough4J: Couldn't load configuration file from classpath: " + conf);
         }
 
         return (loadError) ? new Properties() : properties;
@@ -76,7 +76,7 @@ public final class Slough4JBootstrapper {
             try {
                 defaultLevel = Level.valueOf(sDefaultLevel);
             } catch (IllegalArgumentException e) {
-                System.out.println("Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
+                System.out.println("Slough4J: Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
                 defaultLevel = Level.INFO;
             }
         }
@@ -92,7 +92,7 @@ public final class Slough4JBootstrapper {
                     temp = Level.valueOf(val);
                     levelMap.put(p, temp);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ignoring user-supplied level for " + p + " - '" + val + "' is an invalid Level");
+                    System.out.println("Slough4J: Ignoring user-supplied level for " + p.replace(ConfigKeys.LEVEL_MARKER, "") + " - '" + val + "' is an invalid Level");
                 }
             }
         }
