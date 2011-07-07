@@ -66,18 +66,33 @@ public final class Slough4JBootstrapper {
     protected Configuration createConfiguration(Properties properties) {
         String appenderType = properties.getProperty(ConfigKeys.APPENDER_TYPE);
         String sDefaultLevel = properties.getProperty(ConfigKeys.DEFAULT_LEVEL);
-        Level defaultLevel = Level.valueOf(sDefaultLevel);
+
+        Level defaultLevel;
+
+        if (sDefaultLevel == null) {
+            defaultLevel = Level.INFO;
+        } else {
+
+            try {
+                defaultLevel = Level.valueOf(sDefaultLevel);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
+                defaultLevel = Level.INFO;
+            }
+        }
 
         Map<String, Level> levelMap = new HashMap<String, Level>();
         Level temp;
 
         for (String p : properties.stringPropertyNames()) {
             if (p.startsWith(ConfigKeys.LEVEL_MARKER)) {
+                String val = properties.getProperty(p);
+
                 try {
-                    temp = Level.valueOf(properties.getProperty(p));
+                    temp = Level.valueOf(val);
                     levelMap.put(p, temp);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Ignoring level conf for " + p + " - Invalid Level");
+                    System.out.println("Ignoring user-supplied level for " + p + " - '" + val + "' is an invalid Level");
                 }
             }
         }
