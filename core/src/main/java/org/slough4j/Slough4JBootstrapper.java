@@ -50,7 +50,7 @@ public final class Slough4JBootstrapper {
 
     protected Properties loadProperties(String conf) {
         InputStream stream = this.getClass().getResourceAsStream(conf);
-        Properties properties = new Properties();
+        Properties properties = new Properties(System.getProperties());
         boolean loadError = false;
 
         try {
@@ -64,6 +64,9 @@ public final class Slough4JBootstrapper {
     }
 
     protected Configuration createConfiguration(Properties properties) {
+        String sVerbose = properties.getProperty(ConfigKeys.VERBOSE_INIT);
+        boolean verbose = "true".equals(sVerbose);
+
         String appenderType = properties.getProperty(ConfigKeys.APPENDER_TYPE);
         String sDefaultLevel = properties.getProperty(ConfigKeys.DEFAULT_LEVEL);
 
@@ -76,7 +79,10 @@ public final class Slough4JBootstrapper {
             try {
                 defaultLevel = Level.valueOf(sDefaultLevel);
             } catch (IllegalArgumentException e) {
-                System.out.println("Slough4J: Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
+                if (verbose) {
+                    System.out.println("Slough4J: Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
+                }
+
                 defaultLevel = Level.INFO;
             }
         }
@@ -92,7 +98,9 @@ public final class Slough4JBootstrapper {
                     temp = Level.valueOf(val);
                     levelMap.put(p, temp);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("Slough4J: Ignoring user-supplied level for " + p.replace(ConfigKeys.LEVEL_MARKER, "") + " - '" + val + "' is an invalid Level");
+                    if (verbose) {
+                        System.out.println("Slough4J: Ignoring user-supplied level for " + p.replace(ConfigKeys.LEVEL_MARKER, "") + " - '" + val + "' is an invalid Level");
+                    }
                 }
             }
         }
