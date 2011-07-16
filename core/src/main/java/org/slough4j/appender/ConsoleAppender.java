@@ -5,6 +5,7 @@ import org.slough4j.model.LogMessage;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * TODO: Javadoc
@@ -16,6 +17,10 @@ public class ConsoleAppender implements Appender {
 
     public ConsoleAppender(PrintStream out) {
         this.out = out;
+    }
+
+    public boolean initialize(Map<String, String> properties) {
+        return true;
     }
 
     @Override

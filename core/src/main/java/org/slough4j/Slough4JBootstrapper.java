@@ -3,10 +3,12 @@ package org.slough4j;
 import org.slf4j.ILoggerFactory;
 import org.slough4j.appender.Appender;
 import org.slough4j.appender.ConsoleAppender;
+import org.slough4j.appender.FileAppender;
 import org.slough4j.conf.ConfigKeys;
 import org.slough4j.conf.Configuration;
 import org.slough4j.dispatch.DispatcherImpl;
 import org.slough4j.dispatch.LogWriterThread;
+import org.slough4j.display.Console;
 import org.slough4j.factory.LoggerFactoryImpl;
 import org.slough4j.dispatch.Dispatcher;
 import org.slough4j.level.LevelStore;
@@ -57,7 +59,7 @@ public final class Slough4JBootstrapper {
             properties.load(stream);
         } catch (IOException e) {
             loadError = true;
-            System.out.println("Slough4J: Couldn't load configuration file from classpath: " + conf);
+            Console.puts("Couldn't load configuration file from classpath: " + conf);
         }
 
         return (loadError) ? new Properties() : properties;
@@ -67,7 +69,6 @@ public final class Slough4JBootstrapper {
         String sVerbose = properties.getProperty(ConfigKeys.VERBOSE_INIT);
         boolean verbose = "true".equals(sVerbose);
 
-        String appenderType = properties.getProperty(ConfigKeys.APPENDER_TYPE);
         String sDefaultLevel = properties.getProperty(ConfigKeys.DEFAULT_LEVEL);
 
         Level defaultLevel;
@@ -75,12 +76,11 @@ public final class Slough4JBootstrapper {
         if (sDefaultLevel == null) {
             defaultLevel = Level.INFO;
         } else {
-
             try {
                 defaultLevel = Level.valueOf(sDefaultLevel);
             } catch (IllegalArgumentException e) {
                 if (verbose) {
-                    System.out.println("Slough4J: Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
+                    Console.puts("Ignoring user-supplied default level '" + sDefaultLevel + "' is an invalid level; using INFO");
                 }
 
                 defaultLevel = Level.INFO;
@@ -99,13 +99,22 @@ public final class Slough4JBootstrapper {
                     levelMap.put(p, temp);
                 } catch (IllegalArgumentException e) {
                     if (verbose) {
-                        System.out.println("Slough4J: Ignoring user-supplied level for " + p.replace(ConfigKeys.LEVEL_MARKER, "") + " - '" + val + "' is an invalid Level");
+                        String assign = p.replace(ConfigKeys.LEVEL_MARKER, "");
+                        Console.puts("Ignoring user-supplied level for " + assign + " - '" + val + "' is an invalid Level");
                     }
                 }
             }
         }
 
-        return new Configuration(appenderType, defaultLevel, levelMap);
+        Map<String, String> props = new HashMap<String, String>();
+
+        for (String key : properties.stringPropertyNames()) {
+            // The following downward cast is safe because Properties.stringPropertyNames() will throw
+            // a ClassCastException if the Properties instance has a key or value which is not a String.
+            props.put(key, (String) properties.get(key));
+        }
+
+        return new Configuration(verbose, defaultLevel, levelMap, props);
     }
 
     protected ILoggerFactory configureSlough4J(Configuration config) {
@@ -121,7 +130,7 @@ public final class Slough4JBootstrapper {
 
     protected Dispatcher createDispatcher(Configuration config) {
         BlockingQueue<LogMessage> queue = new LinkedBlockingQueue<LogMessage>();
-        Appender appender = new ConsoleAppender(System.out);
+        Appender appender = createAppender(config);
 
         LogWriterThread thread = new LogWriterThread(queue, appender);
 
@@ -129,5 +138,28 @@ public final class Slough4JBootstrapper {
         thread.start();
 
         return new DispatcherImpl(queue);
+    }
+
+    protected Appender createAppender(Configuration config) {
+        String type = config.getProperties().get(ConfigKeys.APPENDER_TYPE);
+        Appender appender;
+
+        if (type == null || "console".equals(type)) {
+            appender = new ConsoleAppender(System.out);
+        } else if ("file".equals(type)) {
+            appender = new FileAppender();
+        } else {
+            appender = new ConsoleAppender(System.out); // TODO: add extensions.
+        }
+
+        if (!appender.initialize(config.getProperties())) {
+            if (config.isVerbose()) {
+                Console.puts("Could not initialize appender. Defaulting to console.");
+            }
+
+            appender = new ConsoleAppender(System.out);
+        }
+
+        return appender;
     }
 }
