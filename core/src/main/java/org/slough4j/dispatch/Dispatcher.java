@@ -8,5 +8,6 @@ import org.slough4j.model.LogMessage;
  * @author pmorie
  */
 public interface Dispatcher {
+
     void dispatch(LogMessage message);
 }

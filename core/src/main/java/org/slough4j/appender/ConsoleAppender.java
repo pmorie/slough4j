@@ -5,6 +5,7 @@ import org.slough4j.model.LogMessage;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,6 +30,13 @@ public class ConsoleAppender implements Appender {
             out.write(format(message).getBytes());
         } catch (IOException e) {
             // TODO: handle in meaningful way
+        }
+    }
+
+    @Override
+    public void append(List<LogMessage> messages) {
+        for (LogMessage message : messages) {
+            append(message);
         }
     }
 

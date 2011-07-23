@@ -7,7 +7,6 @@ import org.slough4j.appender.FileAppender;
 import org.slough4j.conf.ConfigKeys;
 import org.slough4j.conf.Configuration;
 import org.slough4j.dispatch.DispatcherImpl;
-import org.slough4j.dispatch.LogWriterThread;
 import org.slough4j.display.Console;
 import org.slough4j.factory.LoggerFactoryImpl;
 import org.slough4j.dispatch.Dispatcher;
@@ -132,12 +131,7 @@ public final class Slough4JBootstrapper {
         BlockingQueue<LogMessage> queue = new LinkedBlockingQueue<LogMessage>();
         Appender appender = createAppender(config);
 
-        LogWriterThread thread = new LogWriterThread(queue, appender);
-
-        thread.setDaemon(true);
-        thread.start();
-
-        return new DispatcherImpl(queue);
+        return new DispatcherImpl(queue, appender);
     }
 
     protected Appender createAppender(Configuration config) {

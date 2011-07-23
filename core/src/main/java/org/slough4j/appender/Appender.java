@@ -2,6 +2,7 @@ package org.slough4j.appender;
 
 import org.slough4j.model.LogMessage;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +15,8 @@ public interface Appender {
     boolean initialize(Map<String, String> properties);
 
     void append(LogMessage message);
+
+    void append(List<LogMessage> messages);
 
     void flush();
 }
